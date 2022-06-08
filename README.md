@@ -26,8 +26,9 @@
 </p>
 
 # Usage
-Download the latest [release](https://github.com/lfm2discord/lfm2discord-cli/releases)
-With discord open, run the following binary within your console
+Download the latest [release](https://github.com/lfm2discord/lfm2discord-cli/releases).
+
+With [Discord](https://discord.com/) open, run the following binary within your console
 ```console
 foo@bar:~$ lfm2discord-cli -u MYUSERNAME
 ```
