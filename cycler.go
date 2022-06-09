@@ -13,19 +13,34 @@ var ts = time.Now()
 func cycle() {
 	s := getLatestSong(username) // Fetch latest scrobble, emptyScrobble if no new scrobble
 
-	// Login logout logic
-	if s.active { // Login if scrobble detected and if currently logged out
-		if !loggedIn {
-			log.Info("New scrobble detected. Logging in.")
-			login()
+	if keepStatus {
+		login()
+		if !s.active {
+			err := client.SetActivity(client.Activity{
+				Details:    name,
+				State:      version,
+				LargeImage: "lfm_logo",
+			})
+			if err != nil {
+				log.Warnln("Failed to keep activity.")
+				return
+			}
 		}
-	} else { // No new scrobble
-		if loggedIn { // Logout if logged in
-			log.Info("No scrobble detected. Logging out.")
-			logout()
-		} else { // Retain logout state
-			log.Traceln("No new scrobble detected.")
-			return
+	} else {
+		// Login logout logic
+		if s.active { // Login if scrobble detected and if currently logged out
+			if !loggedIn {
+				log.Info("New scrobble detected. Logging in.")
+				login()
+			}
+		} else { // No new scrobble
+			if loggedIn { // Logout if logged in
+				log.Info("No scrobble detected. Logging out.")
+				logout()
+			} else { // Retain logout state
+				log.Traceln("No new scrobble detected.")
+				return
+			}
 		}
 	}
 

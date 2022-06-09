@@ -17,6 +17,7 @@ func login() {
 	err := client.Login(discordAppId)
 	if err != nil {
 		getRPCLogCtx().Warnln("Could not login to Discord.")
+		logout()
 	} else {
 		loggedIn = true
 		getRPCLogCtx().Debugln("Successfully logged into Discord's RPC Server.")
