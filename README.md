@@ -33,9 +33,5 @@ With [Discord](https://discord.com/) open, run the following binary within your 
 foo@bar:~$ lfm2discord-cli -u MYUSERNAME
 ```
 For full reference on flags, run the binary with the `-h` or `--help` flag.
-# Customization
-Advanced users who are familiar with Go and Discord may customize the behavior of the program to their specific liking.
-## Custom Discord Applications
-Users may use their own discord application by specifiying their Discord application ID by modifying the `appId` constant in `main.go`. 
-Rich presence assets that are used in the default application may be found in the `/discord-dev-assets/` folder.
+
 
