@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">
-  lfm2discord-cli
+  lfm-cli
 </h1>
 
 <p align="center">
@@ -11,18 +11,18 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/go-mod/go-version/lfm2discord/lfm2discord-cli">
-  <img src="https://img.shields.io/github/workflow/status/lfm2discord/lfm2discord-cli/Go">
+  <img src="https://img.shields.io/github/go-mod/go-version/music2discord/lfm-cli">
+  <img src="https://img.shields.io/github/workflow/status/music2discord/lfm-cli/Go">
 	<img src="https://img.shields.io/badge/Platforms-Windows%2C%20MacOS%2C%20Linux-orange">
-  <img src="https://img.shields.io/github/license/lfm2discord/lfm2discord-cli">
+  <img src="https://img.shields.io/github/license/music2discord/lfm-cli">
 </p>
 
 <h2 align="center">
   Sample Images
 </h2>
 <p align="center">
-  <img src="https://raw.githubusercontent.com/lfm2discord/lfm2discord-cli/master/github-assets/screenshot-1.png"><br>
-  <img src="https://raw.githubusercontent.com/lfm2discord/lfm2discord-cli/master/github-assets/screenshot-2.png">
+  <img src="https://raw.githubusercontent.com/music2discord/lfm-cli/master/github-assets/screenshot-1.png"><br>
+  <img src="https://raw.githubusercontent.com/music2discord/lfm-cli/master/github-assets/screenshot-2.png">
 </p>
 
 # Usage
