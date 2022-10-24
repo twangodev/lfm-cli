@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/hugolgst/rich-go/client"
+	"github.com/hugolgst/rich-go/ipc"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -14,7 +15,10 @@ func getRPCLogCtx() *log.Entry {
 }
 
 func login() {
-	err := client.Login(discordAppId)
+	getRPCLogCtx().Traceln("Attempting to close IPC Socket")
+	err := ipc.CloseSocket()
+	getRPCLogCtx().Warnln("IPC Socket Unable to close")
+	err = client.Login(discordAppId)
 	if err != nil {
 		getRPCLogCtx().Warnln("Could not login to Discord.")
 		logout()
