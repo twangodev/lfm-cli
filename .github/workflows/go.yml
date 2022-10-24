@@ -5,7 +5,6 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-  workflow_dispatch:
 
 jobs:
 
@@ -27,3 +26,5 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         draft: true
+        discussion_category_name: releases
+        generate_release_notes: true
