@@ -39,8 +39,8 @@ func cycle() {
 				logout()
 			} else { // Retain logout state
 				log.Traceln("No new scrobble detected.")
-				return
 			}
+			return
 		}
 	}
 
