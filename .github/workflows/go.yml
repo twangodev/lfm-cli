@@ -5,6 +5,7 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+  workflow_dispatch:
 
 jobs:
 
@@ -20,3 +21,11 @@ jobs:
 
     - name: Build
       run: go build -v ./...
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          draft: true
+          generate_release_notes: true
+          token: ${{ secrets.GITHUB_TOKEN }}
