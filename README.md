@@ -15,6 +15,7 @@
   <img src="https://img.shields.io/github/workflow/status/music2discord/lfm-cli/Go">
 	<img src="https://img.shields.io/badge/Platforms-Windows%2C%20MacOS%2C%20Linux-orange">
   <img src="https://img.shields.io/github/license/music2discord/lfm-cli">
+	<a href="https://github.com/music2discord/lfm-cli/actions/workflows/codeql.yml"><img src="https://github.com/music2discord/lfm-cli/actions/workflows/codeql.yml/badge.svg?branch=master"></a>
 </p>
 
 <h2 align="center">
