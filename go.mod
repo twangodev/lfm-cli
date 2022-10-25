@@ -1,4 +1,4 @@
-module lfm2discord-cli
+module lfm-cli
 
 go 1.18
 
