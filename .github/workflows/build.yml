@@ -1,7 +1,9 @@
-name: Build
+name: Build and Release
 
 on:
   push:
+    tags:
+      - v*
     branches:
       - release/*
 
@@ -18,16 +20,16 @@ jobs:
 
       - name: Build
         run: |
-          GOOS=darwin GOARCH=amd64 go build -o "lfm2discord-cli-macos-amd64.${{  github.ref_name }}" -v ./...
-          GOOS=darwin GOARCH=arm64 go build -o "lfm2discord-cli-macos-arm64.${{  github.ref_name }}" -v ./...
-          GOOS=windows GOARCH=amd64 go build -o "lfm2discord-cli-windows-amd64.${{  github.ref_name }}.exe" -v ./...
-          GOOS=linux GOARCH=amd64 go build -o "lfm2discord-cli-linux-amd64.${{  github.ref_name }}" -v ./...
+          GOOS=darwin GOARCH=amd64 go build -o "lfm-cli-macos-amd64.${{  github.ref_name }}" -v ./...
+          GOOS=darwin GOARCH=arm64 go build -o "lfm-cli-macos-arm64.${{  github.ref_name }}" -v ./...
+          GOOS=windows GOARCH=amd64 go build -o "lfm-cli-windows-amd64.${{  github.ref_name }}.exe" -v ./...
+          GOOS=linux GOARCH=amd64 go build -o "lfm-cli-linux-amd64.${{  github.ref_name }}" -v ./...
 
       - name: Save as artifact
         uses: actions/upload-artifact@v2
         with:
           name: builds
-          path: lfm2discord-cli-*
+          path: lfm-cli-*
 
   deploy:
     runs-on: ubuntu-latest
@@ -44,4 +46,4 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           draft: true
           files: |
-            lfm2discord-cli-*
+            lfm-cli-*
