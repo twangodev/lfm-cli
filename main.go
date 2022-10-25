@@ -8,8 +8,8 @@ import (
 	"time"
 )
 
-const name = "lfm2discord-cli"
-const version = "v1.0.0"
+const name = "lfm-cli"
+const version = "v1.1"
 
 const discordAppId = "970003417277812736"
 
