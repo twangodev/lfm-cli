@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	lfm "github.com/lastfm-discordrpc/lfm-api"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"os"
@@ -39,7 +40,7 @@ func exec(ctx *cli.Context) error {
 		log.SetLevel(log.InfoLevel)
 	}
 
-	profileUrl = fmt.Sprintf("%vuser/%v", lastFmUrl, username)
+	profileUrl = fmt.Sprintf("%vuser/%v", lfm.LastFmUrl, username)
 
 	log.WithFields(log.Fields{
 		"username":         username,
