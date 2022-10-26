@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/hugolgst/rich-go/client"
+	lfm "github.com/lastfm-discordrpc/lfm-api"
 	log "github.com/sirupsen/logrus"
 	"time"
 )
@@ -11,11 +12,11 @@ var info = fmt.Sprintf("%v • %v", name, version)
 var ts = time.Now()
 
 func cycle() {
-	s := getLatestSong(username) // Fetch latest scrobble, emptyScrobble if no new scrobble
+	s := lfm.GetActiveScrobble(username) // Fetch latest scrobble, emptyScrobble if no new scrobble
 
 	if keepStatus {
 		login()
-		if !s.active {
+		if !s.Active {
 			err := client.SetActivity(client.Activity{
 				Details:    name,
 				State:      version,
@@ -28,7 +29,7 @@ func cycle() {
 		}
 	} else {
 		// Login logout logic
-		if s.active { // Login if scrobble detected and if currently logged out
+		if s.Active { // Login if scrobble detected and if currently logged out
 			if !loggedIn {
 				log.Info("New scrobble detected. Logging in.")
 				login()
@@ -44,8 +45,8 @@ func cycle() {
 		}
 	}
 
-	if ts != s.dataTimestamp { // Update old timestamp to match current scrobble
-		ts = s.dataTimestamp
+	if ts != s.DataTimestamp { // Update old timestamp to match current scrobble
+		ts = s.DataTimestamp
 		log.WithFields(log.Fields{"scrobbling": s}).Infoln("Updating presence.")
 	} else { // Prevents update of the same scrobble, use timestamp to differentiate
 		return

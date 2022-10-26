@@ -3,19 +3,20 @@ package main
 import (
 	"fmt"
 	"github.com/hugolgst/rich-go/client"
+	lfm "github.com/lastfm-discordrpc/lfm-api"
 	"golang.org/x/net/html"
 )
 
-func createActivity(s scrobble, songLink bool) client.Activity {
+func createActivity(s lfm.Scrobble, songLink bool) client.Activity {
 
 	var songButton *client.Button
 	// Determines whether to display profile link in buttons
 	if songLink {
-		dataLinkTitle := s.dataLinkTitle
-		dataLink := s.dataLink
+		dataLinkTitle := s.DataLinkTitle
+		dataLink := s.DataLink
 		if dataLinkTitle == "" {
 			dataLinkTitle = "View scrobble on Last.fm"
-			dataLink = fmt.Sprintf("%vmusic/%v/%v", lastFmUrl, html.EscapeString(s.artist), html.EscapeString(s.name))
+			dataLink = fmt.Sprintf("%vmusic/%v/%v", lfm.LastFmUrl, html.EscapeString(s.Artist), html.EscapeString(s.Name))
 		}
 		songButton = &client.Button{Label: dataLinkTitle, Url: dataLink}
 	}
@@ -34,27 +35,27 @@ func createActivity(s scrobble, songLink bool) client.Activity {
 
 	// Determines whether to display the heart for the smallImage
 	smallUrl := "lfm_logo"
-	if showLoved && s.loved { // Change small image to heart if user enable loved and scrobble is loved
+	if showLoved && s.Loved { // Change small image to heart if user enable loved and scrobble is loved
 		smallUrl = "heart"
 	}
 
 	var coverUrl string
 	if covers {
-		coverUrl = s.coverArtUrl
+		coverUrl = s.CoverArtUrl
 	}
 
 	var timestamps *client.Timestamps
 	if elapsed {
 		timestamps = &client.Timestamps{
-			Start: &s.dataTimestamp,
+			Start: &s.DataTimestamp,
 		}
 	}
 
 	return client.Activity{
-		Details:    s.name,
-		State:      fmt.Sprintf("by %v", s.artist),
+		Details:    s.Name,
+		State:      fmt.Sprintf("by %v", s.Artist),
 		LargeImage: coverUrl,
-		LargeText:  s.album,
+		LargeText:  s.Album,
 		SmallImage: smallUrl,
 		SmallText:  info,
 		Timestamps: timestamps,
