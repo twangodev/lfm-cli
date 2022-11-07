@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/hugolgst/rich-go/client"
-	lfm "github.com/lastfm-discordrpc/lfm-api"
 	log "github.com/sirupsen/logrus"
+	lfm "github.com/twangodev/lfm-api"
 	"time"
 )
 
@@ -12,7 +12,7 @@ var info = fmt.Sprintf("%v • %v", name, version)
 var ts = time.Now()
 
 func cycle() {
-	s := lfm.GetActiveScrobble(username) // Fetch latest scrobble, emptyScrobble if no new scrobble
+	s, _ := lfm.GetActiveScrobble(username) // Fetch latest scrobble, emptyScrobble if no new scrobble
 
 	if keepStatus {
 		login()

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/hugolgst/rich-go/client"
-	lfm "github.com/lastfm-discordrpc/lfm-api"
+	lfm "github.com/twangodev/lfm-api"
 	"golang.org/x/net/html"
 )
 

@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/hugolgst/rich-go v0.0.0-20210925091458-d59fb695d9c0
-	github.com/lastfm-discordrpc/lfm-api v1.0.0
+	github.com/twangodev/lfm-api v1.0.2
 	github.com/sirupsen/logrus v1.8.1
 	github.com/urfave/cli/v2 v2.8.1
 	golang.org/x/net v0.1.0

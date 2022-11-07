@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	lfm "github.com/lastfm-discordrpc/lfm-api"
 	log "github.com/sirupsen/logrus"
+	lfm "github.com/twangodev/lfm-api"
 	"github.com/urfave/cli/v2"
 	"os"
 	"time"
