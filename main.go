@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/mattn/go-colorable"
 	log "github.com/sirupsen/logrus"
 	lfm "github.com/twangodev/lfm-api"
 	"github.com/urfave/cli/v2"
@@ -63,6 +64,9 @@ func exec(ctx *cli.Context) error {
 }
 
 func main() {
+
+	log.SetFormatter(&log.TextFormatter{ForceColors: true})
+	log.SetOutput(colorable.NewColorableStdout())
 
 	app := &cli.App{
 		Name:        name,
