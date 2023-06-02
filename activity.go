@@ -26,11 +26,11 @@ func createActivity(s lfm.Scrobble, songLink bool) client.Activity {
 		buttons = []*client.Button{songButton}
 	}
 	if showProfile {
-		buttons = []*client.Button{{Label: "Visit Last.fm Profile", Url: profileUrl}}
+		buttons = []*client.Button{{Label: "Visit last.fm Profile", Url: profileUrl}}
 	}
 
 	if showProfile && songButton != nil {
-		buttons = []*client.Button{{Label: "Visit Last.fm Profile", Url: profileUrl}, songButton}
+		buttons = []*client.Button{{Label: "Visit last.fm Profile", Url: profileUrl}, songButton}
 	}
 
 	// Determines whether to display the heart for the smallImage
