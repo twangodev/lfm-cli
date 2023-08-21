@@ -7,13 +7,13 @@ require (
 	github.com/mattn/go-colorable v0.1.13
 	github.com/sirupsen/logrus v1.8.1
 	github.com/twangodev/lfm-api v1.0.3
-	github.com/urfave/cli/v2 v2.8.1
+	github.com/urfave/cli/v2 v2.25.7
 	golang.org/x/net v0.14.0
 )
 
 require (
 	github.com/bozd4g/go-http-client v0.1.4 // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect
+	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
