@@ -26,7 +26,7 @@
 </p>
 
 # Usage
-Download the latest [release](https://github.com/lfm2discord/lfm2discord-cli/releases).
+Download the latest [release](https://github.com/lfm2discord/lfm2discord-cli/releases). These binaries are built on GitHub Actions.
 
 With [Discord](https://discord.com/) open, run the following binary within your console
 ```console
