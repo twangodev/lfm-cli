@@ -26,12 +26,17 @@
 </p>
 
 # Usage
-Download the latest [release](https://github.com/lfm2discord/lfm2discord-cli/releases). These binaries are built on GitHub Actions.
+lfm-cli works right out of the box - no configuration needed.
 
-With [Discord](https://discord.com/) open, run the following binary within your console
+To get started, download the latest [release](https://github.com/lfm2discord/lfm2discord-cli/releases). These binaries are built on GitHub Actions.
+
+**With [Discord](https://discord.com/) open**, run the following binary in your console
 ```console
 foo@bar:~$ lfm-cli -u MYUSERNAME
 ```
 For full reference on flags, run the binary with the `-h` or `--help` flag.
+
+## Known Issues
+- Requires restart when Discord is closed while the application is active.
 
 
