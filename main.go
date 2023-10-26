@@ -11,7 +11,7 @@ import (
 )
 
 const name = "lfm-cli"
-const version = "v1.2.2"
+const version = "v1.2.3"
 
 const discordAppId = "970003417277812736"
 
