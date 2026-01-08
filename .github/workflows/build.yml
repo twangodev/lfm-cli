@@ -77,7 +77,6 @@ jobs:
         run: go build -o "${{ env.BINARY_NAME }}" -v .
 
       - name: Attest build provenance
-        if: github.event_name == 'release'
         uses: actions/attest-build-provenance@v2
         with:
           subject-path: "${{ env.BINARY_NAME }}"
