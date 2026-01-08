@@ -65,7 +65,7 @@ jobs:
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
-        run: go build -o "lfm-cli-${{ matrix.name }}.${{ github.ref_name }}${{ matrix.ext }}" -v .
+        run: go build -o "lfm-cli-${{ matrix.name }}-${{ github.ref_name }}${{ matrix.ext }}" -v .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
