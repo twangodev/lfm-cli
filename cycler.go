@@ -49,6 +49,7 @@ func cycle() {
 					log.Debug("Refreshing Discord connection to prevent stale pipe.")
 					login()
 					lastLoginTime = time.Now()
+					ts = time.Time{} // Reset timestamp to force presence update after reconnection
 				}
 			}
 		} else { // No new scrobble
