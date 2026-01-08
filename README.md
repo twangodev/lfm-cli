@@ -22,8 +22,8 @@
   Sample Images
 </h2>
 <p align="center">
-  <img src="https://raw.githubusercontent.com/music2discord/lfm-cli/master/github-assets/screenshot-1.png"><br>
-  <img src="https://raw.githubusercontent.com/music2discord/lfm-cli/master/github-assets/screenshot-2.png">
+  <img src=".github/assets/screenshot-1.png"><br>
+  <img src=".github/assets/screenshot-2.png">
 </p>
 
 # Usage
