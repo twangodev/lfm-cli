@@ -2,14 +2,22 @@ package main
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/hugolgst/rich-go/client"
 	log "github.com/sirupsen/logrus"
 	lfm "github.com/twangodev/lfm-api"
-	"time"
 )
 
 var info = fmt.Sprintf("%v • %v", name, version)
 var ts = time.Now()
+
+// Track last login time to periodically refresh the connection
+var lastLoginTime time.Time
+
+// Refresh connection every N minutes to handle Discord restarts
+// The rich-go library doesn't properly return errors on broken pipes
+const connectionRefreshInterval = 3 * time.Minute
 
 func cycle() {
 	s, _ := lfm.GetActiveScrobble(username) // Fetch latest scrobble, emptyScrobble if no new scrobble
@@ -33,6 +41,15 @@ func cycle() {
 			if !loggedIn {
 				log.Info("New scrobble detected. Logging in.")
 				login()
+				lastLoginTime = time.Now()
+			} else {
+				// Periodically refresh connection to handle Discord restarts
+				// The rich-go library doesn't properly return errors on broken pipes
+				if time.Since(lastLoginTime) >= connectionRefreshInterval {
+					log.Debug("Refreshing Discord connection to prevent stale pipe.")
+					login()
+					lastLoginTime = time.Now()
+				}
 			}
 		} else { // No new scrobble
 			if loggedIn { // Logout if logged in
@@ -71,5 +88,4 @@ func cycle() {
 	} else {
 		log.Traceln("Successfully set detailed RPC.")
 	}
-
 }

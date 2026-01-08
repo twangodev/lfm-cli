@@ -40,9 +40,3 @@ foo@bar:~$ lfm-cli -u MYUSERNAME
 ```
 
 For full reference on flags, run the binary with the `-h` or `--help` flag.
-
-## Known Issues
-
-- Requires restart when Discord is closed while the application is active.
-
-
