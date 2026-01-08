@@ -2,10 +2,16 @@ name: Build and Release
 
 on:
   push:
+  release:
+    types: [published]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      attestations: write
+      contents: read
     strategy:
       matrix:
         include:
@@ -56,6 +62,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Set binary name
+        run: echo "BINARY_NAME=lfm-cli-${{ matrix.name }}-${{ github.ref_name }}${{ matrix.ext }}" >> $GITHUB_ENV
+
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
@@ -65,10 +74,35 @@ jobs:
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
-        run: go build -o "lfm-cli-${{ matrix.name }}-${{ github.ref_name }}${{ matrix.ext }}" -v .
+        run: go build -o "${{ env.BINARY_NAME }}" -v .
+
+      - name: Attest build provenance
+        if: github.event_name == 'release'
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: "${{ env.BINARY_NAME }}"
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: lfm-cli-${{ matrix.name }}
           path: lfm-cli-*
+
+  release:
+    needs: build
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Upload to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/lfm-cli-*
