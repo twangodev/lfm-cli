@@ -2,16 +2,17 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"time"
+
 	"github.com/mattn/go-colorable"
 	log "github.com/sirupsen/logrus"
 	lfm "github.com/twangodev/lfm-api"
 	"github.com/urfave/cli/v2"
-	"os"
-	"time"
 )
 
 const name = "lfm-cli"
-const version = "v1.2.3"
+const version = "v1.3.0"
 
 const discordAppId = "970003417277812736"
 
