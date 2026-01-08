@@ -18,14 +18,10 @@ jobs:
             goarch: arm64
             name: macos-arm64
             ext: ""
-          # Windows
+          # Windows (arm64 not supported - npipe library lacks ARM64 syscall bindings)
           - goos: windows
             goarch: amd64
             name: windows-amd64
-            ext: ".exe"
-          - goos: windows
-            goarch: arm64
-            name: windows-arm64
             ext: ".exe"
           - goos: windows
             goarch: 386
