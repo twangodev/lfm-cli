@@ -13,7 +13,7 @@
 <p align="center">
   <img src="https://img.shields.io/github/go-mod/go-version/twangodev/lfm-cli">
   <img alt="GitHub all releases" src="https://img.shields.io/github/downloads/twangodev/lfm-cli/total">
-  <img src="https://img.shields.io/github/actions/workflow/status/twangodev/lfm-cli/build.yml?branch=master">
+  <img src="https://img.shields.io/github/actions/workflow/status/twangodev/lfm-cli/build.yml?branch=main">
   <img src="https://img.shields.io/badge/Platforms-Windows%2C%20MacOS%2C%20Linux-orange">
   <img src="https://img.shields.io/github/license/twangodev/lfm-cli">
 </p>
