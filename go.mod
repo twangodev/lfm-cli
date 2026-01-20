@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/hugolgst/rich-go v0.0.0-20240715122152-74618cc1ace2
 	github.com/mattn/go-colorable v0.1.14
-	github.com/sirupsen/logrus v1.9.3
+	github.com/sirupsen/logrus v1.9.4
 	github.com/twangodev/lfm-api v1.1.0
 	github.com/urfave/cli/v2 v2.27.7
 	golang.org/x/net v0.48.0
