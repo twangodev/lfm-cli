@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/twangodev/lfm-cli/compare/v1.4.0...v1.5.0) (2026-05-24)
+
+
+### Features
+
+* use Listening activity type for Discord presence ([2918584](https://github.com/twangodev/lfm-cli/commit/29185848c61b005bac5539bf8ed47835a4030386))
+
 ## [1.4.0](https://github.com/twangodev/lfm-cli/compare/v1.3.1...v1.4.0) (2026-05-24)
 
 
