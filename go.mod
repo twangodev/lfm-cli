@@ -8,7 +8,7 @@ require (
 	github.com/twangodev/lfm-api v1.1.0
 	github.com/urfave/cli/v2 v2.27.7
 	github.com/xeyossr/go-discordrpc v1.1.0
-	golang.org/x/net v0.52.0
+	golang.org/x/net v0.55.0
 )
 
 require (
@@ -19,6 +19,6 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/xrash/smetrics v0.0.0-20250705151800-55b8f293f342 // indirect
 	golang.org/x/exp v0.0.0-20251219203646-944ab1f22d93 // indirect
-	golang.org/x/sys v0.42.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 )
