@@ -7,6 +7,10 @@ import (
 	"golang.org/x/net/html"
 )
 
+// Discord activity type for "Listening to ..." presence.
+// go-discordrpc encodes this as 0=Playing, 1=Streaming, 2=Listening, 3=Watching.
+const activityTypeListening = 2
+
 func createActivity(s lfm.Scrobble, songLink bool) client.Activity {
 
 	var songButton *client.Button
@@ -52,6 +56,7 @@ func createActivity(s lfm.Scrobble, songLink bool) client.Activity {
 	}
 
 	return client.Activity{
+		Type:       activityTypeListening,
 		Details:    s.Name,
 		State:      fmt.Sprintf("by %v", s.Artist),
 		LargeImage: coverUrl,
