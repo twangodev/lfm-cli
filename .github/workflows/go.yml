@@ -1,11 +1,25 @@
-name: Build and Release
+name: Go
 
 on:
   push:
-  release:
-    types: [published]
 
 jobs:
+  release-please:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -63,7 +77,11 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Set binary name
-        run: echo "BINARY_NAME=lfm-cli-${{ matrix.name }}-${{ github.ref_name }}${{ matrix.ext }}" >> $GITHUB_ENV
+        # Version comes from the const in main.go, which release-please keeps in
+        # sync; on a release-PR merge it already holds the version being tagged.
+        run: |
+          VERSION=$(sed -n 's/^const version = "\([^"]*\)".*/\1/p' main.go)
+          echo "BINARY_NAME=lfm-cli-${{ matrix.name }}-${VERSION}${{ matrix.ext }}" >> $GITHUB_ENV
 
       - name: Set up Go
         uses: actions/setup-go@v6
@@ -88,8 +106,8 @@ jobs:
           path: lfm-cli-*
 
   release:
-    needs: build
-    if: github.event_name == 'release'
+    needs: [release-please, build]
+    if: needs.release-please.outputs.release_created == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -103,5 +121,6 @@ jobs:
       - name: Upload to release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ needs.release-please.outputs.tag_name }}
           files: |
             artifacts/lfm-cli-*
