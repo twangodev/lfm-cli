@@ -3,11 +3,11 @@ module lfm-cli
 go 1.25.0
 
 require (
-	github.com/hugolgst/rich-go v0.0.0-20240715122152-74618cc1ace2
 	github.com/mattn/go-colorable v0.1.14
 	github.com/sirupsen/logrus v1.9.4
 	github.com/twangodev/lfm-api v1.1.0
 	github.com/urfave/cli/v2 v2.27.7
+	github.com/xeyossr/go-discordrpc v1.1.0
 	golang.org/x/net v0.52.0
 )
 

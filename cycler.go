@@ -4,20 +4,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hugolgst/rich-go/client"
 	log "github.com/sirupsen/logrus"
 	lfm "github.com/twangodev/lfm-api"
+	"github.com/xeyossr/go-discordrpc/client"
 )
 
 var info = fmt.Sprintf("%v • %v", name, version)
 var ts = time.Now()
-
-// Track last login time to periodically refresh the connection
-var lastLoginTime time.Time
-
-// Refresh connection every N minutes to handle Discord restarts
-// The rich-go library doesn't properly return errors on broken pipes
-const connectionRefreshInterval = 3 * time.Minute
 
 func cycle() {
 	s, _ := lfm.GetActiveScrobble(username) // Fetch latest scrobble, emptyScrobble if no new scrobble
@@ -25,13 +18,14 @@ func cycle() {
 	if keepStatus {
 		login()
 		if !s.Active {
-			err := client.SetActivity(client.Activity{
+			err := rpcClient.SetActivity(client.Activity{
 				Details:    name,
 				State:      version,
 				LargeImage: "lfm_logo",
 			})
 			if err != nil {
-				log.Warnln("Failed to keep activity.")
+				log.Warnln("Failed to keep activity. Dropping connection to reconnect next cycle.")
+				logout()
 				return
 			}
 		}
@@ -41,16 +35,6 @@ func cycle() {
 			if !loggedIn {
 				log.Info("New scrobble detected. Logging in.")
 				login()
-				lastLoginTime = time.Now()
-			} else {
-				// Periodically refresh connection to handle Discord restarts
-				// The rich-go library doesn't properly return errors on broken pipes
-				if time.Since(lastLoginTime) >= connectionRefreshInterval {
-					log.Debug("Refreshing Discord connection to prevent stale pipe.")
-					login()
-					lastLoginTime = time.Now()
-					ts = time.Time{} // Reset timestamp to force presence update after reconnection
-				}
 			}
 		} else { // No new scrobble
 			if loggedIn { // Logout if logged in
@@ -71,7 +55,7 @@ func cycle() {
 	}
 
 	// First RPC attempt is without songLink
-	err1 := client.SetActivity(createActivity(s, false))
+	err1 := rpcClient.SetActivity(createActivity(s, false))
 	if err1 != nil {
 		log.Info("Failed to set base RPC. Retrying with detailed payload.")
 	} else {
@@ -79,10 +63,12 @@ func cycle() {
 	}
 
 	// Second RPC attempt is with songLink
-	err2 := client.SetActivity(createActivity(s, true))
+	err2 := rpcClient.SetActivity(createActivity(s, true))
 	if err2 != nil {
 		if err1 != nil {
-			log.Warnln("Both attempts to set RPC failed.")
+			log.Warnln("Both attempts to set RPC failed. Reconnecting next cycle.")
+			logout()
+			ts = time.Time{}
 		} else {
 			log.Info("Failed to set detailed RPC.")
 		}

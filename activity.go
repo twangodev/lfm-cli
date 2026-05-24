@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/hugolgst/rich-go/client"
+	"github.com/xeyossr/go-discordrpc/client"
 	lfm "github.com/twangodev/lfm-api"
 	"golang.org/x/net/html"
 )
