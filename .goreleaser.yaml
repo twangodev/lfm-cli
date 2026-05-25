@@ -1,0 +1,98 @@
+version: 2
+
+project_name: lfm-cli
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: lfm-cli
+    main: .
+    binary: lfm-cli
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+    goos: [darwin, windows, linux, freebsd]
+    goarch: [amd64, arm64, arm, "386"]
+    goarm: ["7"]
+    ignore:
+      # Windows arm64 unsupported: npipe lacks ARM64 syscall bindings.
+      - { goos: windows, goarch: arm64 }
+      # Keep only the 10 targets the project shipped before.
+      - { goos: darwin, goarch: arm }
+      - { goos: darwin, goarch: "386" }
+      - { goos: windows, goarch: arm }
+      - { goos: freebsd, goarch: arm }
+      - { goos: freebsd, goarch: "386" }
+
+archives:
+  - id: default
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    files:
+      - README.md
+      - LICENSE
+    # Must match install.sh: lfm-cli_<version>_<os>_<arch>
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: checksums.txt
+
+sboms:
+  - artifacts: archive
+
+signs:
+  - cmd: cosign
+    certificate: "${artifact}.pem"
+    args:
+      - sign-blob
+      - "--output-certificate=${certificate}"
+      - "--output-signature=${signature}"
+      - "${artifact}"
+      - "--yes"
+    artifacts: checksum
+    output: true
+
+nfpms:
+  - id: packages
+    package_name: lfm-cli
+    formats: [deb, rpm, apk]
+    maintainer: "James Ding <jamesding365@gmail.com>"
+    description: "Show your Last.FM scrobbles on Discord."
+    homepage: "https://github.com/twangodev/lfm-cli"
+    bindir: /usr/bin
+
+homebrew_casks:
+  - name: lfm-cli
+    repository:
+      owner: twangodev
+      name: homebrew-tap
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+    directory: Casks
+    homepage: "https://github.com/twangodev/lfm-cli"
+    description: "Show your Last.FM scrobbles on Discord."
+    url:
+      verified: "github.com/twangodev/lfm-cli/"
+    commit_author:
+      name: goreleaserbot
+      email: bot@goreleaser.com
+
+scoops:
+  - repository:
+      owner: twangodev
+      name: scoop-bucket
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+    homepage: "https://github.com/twangodev/lfm-cli"
+    description: "Show your Last.FM scrobbles on Discord."
+
+release:
+  mode: append          # release-please already created the GitHub Release
+  github:
+    owner: twangodev
+    name: lfm-cli
