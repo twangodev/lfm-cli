@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.6.0](https://github.com/twangodev/lfm-cli/compare/v1.5.0...v1.6.0) (2026-05-25)
+
+
+### Features
+
+* add generic install.sh installer script ([fbee784](https://github.com/twangodev/lfm-cli/commit/fbee784102a86a593096f30391a90553d1b71429))
+* add GoReleaser config for multi-platform distribution ([3d5131b](https://github.com/twangodev/lfm-cli/commit/3d5131bbd69917fa77bb3a58e4ffbb5de9b29383))
+
+
+### Bug Fixes
+
+* address review — persist-credentials:false, reject ARMv6, clarify signing wording ([db35dbb](https://github.com/twangodev/lfm-cli/commit/db35dbbe77c2e515dcaf7cbf9debfb664bdd1102))
+
 ## [1.5.0](https://github.com/twangodev/lfm-cli/compare/v1.4.0...v1.5.0) (2026-05-24)
 
 
