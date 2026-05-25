@@ -25,7 +25,8 @@ arch=$(uname -m)
 case "$arch" in
 	x86_64 | amd64) arch="amd64" ;;
 	arm64 | aarch64) arch="arm64" ;;
-	armv7l | armv6l | arm) arch="arm" ;;
+	armv7l | arm) arch="arm" ;;
+	armv6l) err "ARMv6 is not supported by current releases (built for ARMv7+)" ;;
 	i386 | i686) arch="386" ;;
 	*) err "unsupported architecture: $arch" ;;
 esac

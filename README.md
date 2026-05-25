@@ -52,8 +52,8 @@ curl -fsSL https://twango.dev/install/lfm-cli | sh
 [latest release](https://github.com/twangodev/lfm-cli/releases/latest).
 
 **Manual:** download the archive for your platform from the
-[releases page](https://github.com/twangodev/lfm-cli/releases). Binaries are
-built and signed (cosign + SBOM) on GitHub Actions.
+[releases page](https://github.com/twangodev/lfm-cli/releases). Releases include
+SBOMs and cosign-signed checksums generated on GitHub Actions.
 
 ## Usage
 
