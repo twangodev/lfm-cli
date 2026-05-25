@@ -20,107 +20,59 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-  build:
+  goreleaser-check:
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref != 'refs/heads/main')
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      attestations: write
-      contents: read
-    strategy:
-      matrix:
-        include:
-          # macOS
-          - goos: darwin
-            goarch: amd64
-            name: macos-amd64
-            ext: ""
-          - goos: darwin
-            goarch: arm64
-            name: macos-arm64
-            ext: ""
-          # Windows (arm64 not supported - npipe library lacks ARM64 syscall bindings)
-          - goos: windows
-            goarch: amd64
-            name: windows-amd64
-            ext: ".exe"
-          - goos: windows
-            goarch: 386
-            name: windows-386
-            ext: ".exe"
-          # Linux
-          - goos: linux
-            goarch: amd64
-            name: linux-amd64
-            ext: ""
-          - goos: linux
-            goarch: arm64
-            name: linux-arm64
-            ext: ""
-          - goos: linux
-            goarch: arm
-            name: linux-arm
-            ext: ""
-          - goos: linux
-            goarch: 386
-            name: linux-386
-            ext: ""
-          # FreeBSD
-          - goos: freebsd
-            goarch: amd64
-            name: freebsd-amd64
-            ext: ""
-          - goos: freebsd
-            goarch: arm64
-            name: freebsd-arm64
-            ext: ""
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: "go.mod"
+      - uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: "~> v2"
+          args: check
 
-      - name: Set binary name
-        # Version comes from the const in main.go, which release-please keeps in
-        # sync; on a release-PR merge it already holds the version being tagged.
-        run: |
-          VERSION=$(sed -n 's/^const version = "\([^"]*\)".*/\1/p' main.go)
-          echo "BINARY_NAME=lfm-cli-${{ matrix.name }}-${VERSION}${{ matrix.ext }}" >> $GITHUB_ENV
+  goreleaser:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write      # upload release assets
+      id-token: write      # cosign keyless + provenance OIDC
+      attestations: write  # attest-build-provenance
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+          fetch-depth: 0
 
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
           go-version-file: "go.mod"
 
-      - name: Build
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Install syft (SBOM)
+        uses: anchore/sbom-action/download-syft@v0
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: "~> v2"
+          args: release --clean
         env:
-          GOOS: ${{ matrix.goos }}
-          GOARCH: ${{ matrix.goarch }}
-        run: go build -o "${{ env.BINARY_NAME }}" -v .
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAP_GITHUB_TOKEN: ${{ secrets.TAP_GITHUB_TOKEN }}
 
       - name: Attest build provenance
         uses: actions/attest-build-provenance@v3
         with:
-          subject-path: "${{ env.BINARY_NAME }}"
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: lfm-cli-${{ matrix.name }}
-          path: lfm-cli-*
-
-  release:
-    needs: [release-please, build]
-    if: needs.release-please.outputs.release_created == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v8
-        with:
-          path: artifacts
-          merge-multiple: true
-
-      - name: Upload to release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ needs.release-please.outputs.tag_name }}
-          files: |
-            artifacts/lfm-cli-*
+          subject-path: "dist/lfm-cli_*"
