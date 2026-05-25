@@ -73,7 +73,7 @@ homebrew_casks:
     repository:
       owner: twangodev
       name: homebrew-tap
-      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+      token: "{{ .Env.RELEASE_GITHUB_TOKEN }}"
     directory: Casks
     homepage: "https://github.com/twangodev/lfm-cli"
     description: "Show your Last.FM scrobbles on Discord."
@@ -87,7 +87,7 @@ scoops:
   - repository:
       owner: twangodev
       name: scoop-bucket
-      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+      token: "{{ .Env.RELEASE_GITHUB_TOKEN }}"
     homepage: "https://github.com/twangodev/lfm-cli"
     description: "Show your Last.FM scrobbles on Discord."
 
