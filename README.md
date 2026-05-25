@@ -26,12 +26,36 @@
   <img src=".github/assets/screenshot-2.png">
 </p>
 
-# Usage
+# Getting Started
 
 lfm-cli works right out of the box - no configuration needed.
 
-To get started, download the latest [release](https://github.com/lfm2discord/lfm2discord-cli/releases). These binaries
-are built on GitHub Actions.
+## Installation
+
+**Homebrew (macOS):**
+```console
+brew install twangodev/tap/lfm-cli
+```
+
+**Scoop (Windows):**
+```console
+scoop bucket add twangodev https://github.com/twangodev/scoop-bucket
+scoop install lfm-cli
+```
+
+**Install script (macOS / Linux / FreeBSD):**
+```console
+curl -fsSL https://twango.dev/install/lfm-cli | sh
+```
+
+**Linux packages:** download the `.deb`, `.rpm`, or `.apk` from the
+[latest release](https://github.com/twangodev/lfm-cli/releases/latest).
+
+**Manual:** download the archive for your platform from the
+[releases page](https://github.com/twangodev/lfm-cli/releases). Binaries are
+built and signed (cosign + SBOM) on GitHub Actions.
+
+## Usage
 
 **With [Discord](https://discord.com/) open**, run the following binary in your console
 
