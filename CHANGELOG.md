@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.1](https://github.com/twangodev/lfm-cli/compare/v1.6.0...v1.6.1) (2026-05-26)
+
+
+### Bug Fixes
+
+* correct Last.fm fallback scrobble URL format ([07dbb36](https://github.com/twangodev/lfm-cli/commit/07dbb361562e5337e4bec62e68f8aa0be2866c6d))
+* drop trailing period from descriptions (brew Cask/Desc audit) ([e8794e0](https://github.com/twangodev/lfm-cli/commit/e8794e03e374307da86e90dd2077ec515eb2cfbb))
+
 ## [1.6.0](https://github.com/twangodev/lfm-cli/compare/v1.5.0...v1.6.0) (2026-05-25)
 
 
