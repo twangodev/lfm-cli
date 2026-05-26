@@ -82,6 +82,13 @@ homebrew_casks:
     commit_author:
       name: goreleaserbot
       email: bot@goreleaser.com
+    # Strip quarantine flag so Gatekeeper doesn't block the unsigned binary.
+    hooks:
+      post:
+        install: |
+          if system_command("/usr/bin/xattr", args: ["-h"]).exit_status == 0
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/lfm-cli"]
+          end
 
 scoops:
   - repository:

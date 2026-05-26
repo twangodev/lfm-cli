@@ -72,6 +72,11 @@ fi
 mkdir -p "$dir"
 install -m 0755 "${tmp}/${BIN}" "${dir}/${BIN}"
 
+# macOS: drop the quarantine flag so Gatekeeper doesn't block our unsigned binary
+if [ "$os" = "darwin" ]; then
+	xattr -d com.apple.quarantine "${dir}/${BIN}" 2>/dev/null || true
+fi
+
 printf 'Installed %s to %s/%s\n' "$BIN" "$dir" "$BIN"
 case ":${PATH}:" in
 	*":${dir}:"*) ;;
