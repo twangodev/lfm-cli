@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/xeyossr/go-discordrpc/client"
 	lfm "github.com/twangodev/lfm-api"
-	"golang.org/x/net/html"
+	"github.com/xeyossr/go-discordrpc/client"
+	"net/url"
 )
 
 // Discord activity type for "Listening to ..." presence.
@@ -20,7 +20,7 @@ func createActivity(s lfm.Scrobble, songLink bool) client.Activity {
 		dataLink := s.DataLink
 		if dataLinkTitle == "" {
 			dataLinkTitle = "View scrobble on Last.fm"
-			dataLink = fmt.Sprintf("%vmusic/%v/%v", lfm.LastFmUrl, html.EscapeString(s.Artist), html.EscapeString(s.Name))
+			dataLink = fmt.Sprintf("%vmusic/%v/_/%v", lfm.LastFmUrl, url.QueryEscape(s.Artist), url.QueryEscape(s.Name))
 		}
 		songButton = &client.Button{Label: dataLinkTitle, Url: dataLink}
 	}
