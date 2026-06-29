@@ -21,7 +21,7 @@ func login() {
 		return
 	}
 	if err := rpcClient.Login(); err != nil {
-		getRPCLogCtx().Warn("Could not login to Discord.")
+		getRPCLogCtx().Warn("Could not login to Discord.", tint.Err(err))
 		logout()
 		return
 	}

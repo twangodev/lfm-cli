@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"time"
 
+	"github.com/lmittmann/tint"
 	lfm "github.com/twangodev/lfm-api"
 	"github.com/xeyossr/go-discordrpc/client"
 )
@@ -24,7 +25,7 @@ func cycle() {
 				LargeImage: "lfm_logo",
 			})
 			if err != nil {
-				slog.Warn("Failed to keep activity. Dropping connection to reconnect next cycle.")
+				slog.Warn("Failed to keep activity. Dropping connection to reconnect next cycle.", tint.Err(err))
 				logout()
 				return
 			}
@@ -57,7 +58,7 @@ func cycle() {
 	// First RPC attempt is without songLink
 	err1 := rpcClient.SetActivity(createActivity(s, false))
 	if err1 != nil {
-		slog.Info("Failed to set base RPC. Retrying with detailed payload.")
+		slog.Info("Failed to set base RPC. Retrying with detailed payload.", tint.Err(err1))
 	} else {
 		slog.Debug("Successfully set base RPC.")
 	}
@@ -66,11 +67,11 @@ func cycle() {
 	err2 := rpcClient.SetActivity(createActivity(s, true))
 	if err2 != nil {
 		if err1 != nil {
-			slog.Warn("Both attempts to set RPC failed. Reconnecting next cycle.")
+			slog.Warn("Both attempts to set RPC failed. Reconnecting next cycle.", "base_err", err1, "detailed_err", err2)
 			logout()
 			ts = time.Time{}
 		} else {
-			slog.Info("Failed to set detailed RPC.")
+			slog.Info("Failed to set detailed RPC.", tint.Err(err2))
 		}
 	} else {
 		slog.Debug("Successfully set detailed RPC.")
