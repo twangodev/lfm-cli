@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"time"
 
-	log "github.com/sirupsen/logrus"
 	lfm "github.com/twangodev/lfm-api"
 	"github.com/xeyossr/go-discordrpc/client"
 )
@@ -24,7 +24,7 @@ func cycle() {
 				LargeImage: "lfm_logo",
 			})
 			if err != nil {
-				log.Warnln("Failed to keep activity. Dropping connection to reconnect next cycle.")
+				slog.Warn("Failed to keep activity. Dropping connection to reconnect next cycle.")
 				logout()
 				return
 			}
@@ -33,15 +33,15 @@ func cycle() {
 		// Login logout logic
 		if s.Active { // Login if scrobble detected and if currently logged out
 			if !loggedIn {
-				log.Info("New scrobble detected. Logging in.")
+				slog.Info("New scrobble detected. Logging in.")
 				login()
 			}
 		} else { // No new scrobble
 			if loggedIn { // Logout if logged in
-				log.Info("No scrobble detected. Logging out.")
+				slog.Info("No scrobble detected. Logging out.")
 				logout()
 			} else { // Retain logout state
-				log.Traceln("No new scrobble detected.")
+				slog.Debug("No new scrobble detected.")
 			}
 			return
 		}
@@ -49,7 +49,7 @@ func cycle() {
 
 	if ts != s.DataTimestamp { // Update old timestamp to match current scrobble
 		ts = s.DataTimestamp
-		log.WithFields(log.Fields{"scrobbling": s}).Infoln("Updating presence.")
+		slog.Info("Updating presence.", "scrobbling", s)
 	} else { // Prevents update of the same scrobble, use timestamp to differentiate
 		return
 	}
@@ -57,22 +57,22 @@ func cycle() {
 	// First RPC attempt is without songLink
 	err1 := rpcClient.SetActivity(createActivity(s, false))
 	if err1 != nil {
-		log.Info("Failed to set base RPC. Retrying with detailed payload.")
+		slog.Info("Failed to set base RPC. Retrying with detailed payload.")
 	} else {
-		log.Traceln("Successfully set base RPC.")
+		slog.Debug("Successfully set base RPC.")
 	}
 
 	// Second RPC attempt is with songLink
 	err2 := rpcClient.SetActivity(createActivity(s, true))
 	if err2 != nil {
 		if err1 != nil {
-			log.Warnln("Both attempts to set RPC failed. Reconnecting next cycle.")
+			slog.Warn("Both attempts to set RPC failed. Reconnecting next cycle.")
 			logout()
 			ts = time.Time{}
 		} else {
-			log.Info("Failed to set detailed RPC.")
+			slog.Info("Failed to set detailed RPC.")
 		}
 	} else {
-		log.Traceln("Successfully set detailed RPC.")
+		slog.Debug("Successfully set detailed RPC.")
 	}
 }

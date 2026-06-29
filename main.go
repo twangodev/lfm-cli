@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"time"
 
+	"github.com/lmittmann/tint"
 	"github.com/mattn/go-colorable"
-	log "github.com/sirupsen/logrus"
+	"github.com/mattn/go-isatty"
 	lfm "github.com/twangodev/lfm-api"
 	"github.com/urfave/cli/v2"
 )
@@ -28,6 +30,9 @@ var debug bool
 
 var profileUrl string
 
+// logLevel lets main() build the handler before flags are parsed; exec() raises it for --debug.
+var logLevel = new(slog.LevelVar)
+
 func exec(ctx *cli.Context) error {
 
 	showProfile = !ctx.Bool("hide-profile")
@@ -37,28 +42,28 @@ func exec(ctx *cli.Context) error {
 	keepStatus = ctx.Bool("keep-status")
 	debug = ctx.Bool("debug")
 	if debug {
-		log.SetLevel(log.TraceLevel)
+		logLevel.Set(slog.LevelDebug)
 	} else {
-		log.SetLevel(log.InfoLevel)
+		logLevel.Set(slog.LevelInfo)
 	}
 
 	profileUrl = fmt.Sprintf("%vuser/%v", lfm.LastFmUrl, username)
 
-	log.WithFields(log.Fields{
-		"username":         username,
-		"refresh_interval": refreshInterval,
-		"show_profile":     showProfile,
-		"show_loved":       showLoved,
-		"show_covers":      covers,
-		"show_elapsed":     elapsed,
-		"keep_status":      keepStatus,
-		"debug_enabled":    debug,
-	}).Infoln("Configuration loaded from arguments")
+	slog.Info("Configuration loaded from arguments",
+		"username", username,
+		"refresh_interval", refreshInterval,
+		"show_profile", showProfile,
+		"show_loved", showLoved,
+		"show_covers", covers,
+		"show_elapsed", elapsed,
+		"keep_status", keepStatus,
+		"debug_enabled", debug,
+	)
 
 	for {
-		log.Traceln("Cycle begin.")
+		slog.Debug("Cycle begin.")
 		cycle()
-		log.Traceln("Cycle complete.")
+		slog.Debug("Cycle complete.")
 		time.Sleep(time.Duration(refreshInterval) * time.Second)
 	}
 
@@ -66,8 +71,11 @@ func exec(ctx *cli.Context) error {
 
 func main() {
 
-	log.SetFormatter(&log.TextFormatter{ForceColors: true})
-	log.SetOutput(colorable.NewColorableStdout())
+	slog.SetDefault(slog.New(tint.NewHandler(colorable.NewColorableStderr(), &tint.Options{
+		Level:      logLevel,
+		TimeFormat: "15:04:05.000",
+		NoColor:    !isatty.IsTerminal(os.Stderr.Fd()),
+	})))
 
 	app := &cli.App{
 		Name:        name,
@@ -130,7 +138,8 @@ func main() {
 
 	err := app.Run(os.Args)
 	if err != nil {
-		log.Fatal(err)
+		slog.Error("fatal error", tint.Err(err))
+		os.Exit(1)
 	}
 
 }
