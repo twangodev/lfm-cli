@@ -77,7 +77,7 @@ func main() {
 		Authors: []*cli.Author{
 			{
 				Name:  "James Ding",
-				Email: "jamesding365@gmail.com",
+				Email: "james@twango.dev",
 			},
 		},
 		Copyright: "(c) 2022 James Ding",

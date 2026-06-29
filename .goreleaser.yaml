@@ -63,7 +63,7 @@ nfpms:
   - id: packages
     package_name: lfm-cli
     formats: [deb, rpm, apk]
-    maintainer: "James Ding <jamesding365@gmail.com>"
+    maintainer: "James Ding <james@twango.dev>"
     description: "Show your Last.FM scrobbles on Discord"
     homepage: "https://github.com/twangodev/lfm-cli"
     bindir: /usr/bin
