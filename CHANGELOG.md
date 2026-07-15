@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.6.2](https://github.com/twangodev/lfm-cli/compare/v1.6.1...v1.6.2) (2026-07-15)
+
+
+### Bug Fixes
+
+* **deps:** bump lfm-api to v1.1.1 to surface non-200 responses as errors ([6aa6004](https://github.com/twangodev/lfm-cli/commit/6aa60048deff69056b4c23d4973b17950aa1ad83))
+* retain presence on transient scrobble fetch errors ([8cffd71](https://github.com/twangodev/lfm-cli/commit/8cffd718d765fa6007372e201dc14f3885652c5f))
+* strip macOS quarantine flag on install to avoid Gatekeeper prompt ([15db3c1](https://github.com/twangodev/lfm-cli/commit/15db3c16b1f01dfb150488c8f7707575a2027b18))
+
 ## [1.6.1](https://github.com/twangodev/lfm-cli/compare/v1.6.0...v1.6.1) (2026-05-26)
 
 
