@@ -2,6 +2,7 @@ package main
 
 import (
 	"log/slog"
+	"time"
 
 	"github.com/lmittmann/tint"
 	"github.com/xeyossr/go-discordrpc/client"
@@ -34,5 +35,6 @@ func logout() {
 		getRPCLogCtx().Debug("Error closing Discord RPC connection.", tint.Err(err))
 	}
 	loggedIn = false
+	ts = time.Time{} // Force presence re-send on next login
 	getRPCLogCtx().Debug("Successfully logged out of Discord's RPC Server.")
 }

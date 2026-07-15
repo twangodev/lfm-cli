@@ -13,8 +13,15 @@ import (
 var info = fmt.Sprintf("%v • %v", name, version)
 var ts = time.Now()
 
+// Swappable in tests
+var getActiveScrobble = lfm.GetActiveScrobble
+
 func cycle() {
-	s, _ := lfm.GetActiveScrobble(username) // Fetch latest scrobble, emptyScrobble if no new scrobble
+	s, err := getActiveScrobble(username) // Fetch latest scrobble, emptyScrobble if no new scrobble
+	if err != nil {                       // Transient fetch failure is not "stopped scrobbling"
+		slog.Warn("Could not fetch scrobble state. Retaining presence until next cycle.", tint.Err(err))
+		return
+	}
 
 	if keepStatus {
 		login()
@@ -69,7 +76,6 @@ func cycle() {
 		if err1 != nil {
 			slog.Warn("Both attempts to set RPC failed. Reconnecting next cycle.", "base_err", err1, "detailed_err", err2)
 			logout()
-			ts = time.Time{}
 		} else {
 			slog.Info("Failed to set detailed RPC.", tint.Err(err2))
 		}
