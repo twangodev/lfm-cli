@@ -16,10 +16,36 @@ var ts = time.Now()
 // Swappable in tests
 var getActiveScrobble = lfm.GetActiveScrobble
 
+var fetchHealth scrobbleFetchHealth
+
+type scrobbleFetchHealth struct {
+	failedSince time.Time
+	warned      bool
+}
+
+func (h *scrobbleFetchHealth) observe(now time.Time, err error) {
+	if err == nil {
+		if h.warned {
+			slog.Info("Scrobble fetching recovered.", "duration", now.Sub(h.failedSince))
+		}
+		*h = scrobbleFetchHealth{}
+		return
+	}
+
+	if h.failedSince.IsZero() {
+		h.failedSince = now
+	}
+	slog.Debug("Could not fetch scrobble state. Retaining presence until next cycle.", tint.Err(err))
+	if !h.warned && now.Sub(h.failedSince) >= time.Minute {
+		slog.Warn("Could not fetch scrobble state for at least 60 seconds. Presence may be stale.", "duration", now.Sub(h.failedSince), tint.Err(err))
+		h.warned = true
+	}
+}
+
 func cycle() {
 	s, err := getActiveScrobble(username) // Fetch latest scrobble, emptyScrobble if no new scrobble
-	if err != nil {                       // Transient fetch failure is not "stopped scrobbling"
-		slog.Warn("Could not fetch scrobble state. Retaining presence until next cycle.", tint.Err(err))
+	fetchHealth.observe(time.Now(), err)
+	if err != nil { // Transient fetch failure is not "stopped scrobbling"
 		return
 	}
 
