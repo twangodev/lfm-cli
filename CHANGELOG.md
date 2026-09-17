@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.5](https://github.com/twangodev/lfm-cli/compare/v1.6.4...v1.6.5) (2026-09-17)
+
+
+### Bug Fixes
+
+* **release:** remove deprecated Homebrew URL verification setting ([ec82dff](https://github.com/twangodev/lfm-cli/commit/ec82dff440889b69a3ad3f407371db214f820a9c))
+
 ## [1.6.4](https://github.com/twangodev/lfm-cli/compare/v1.6.3...v1.6.4) (2026-09-17)
 
 
