@@ -6,17 +6,14 @@ require (
 	github.com/lmittmann/tint v1.1.3
 	github.com/mattn/go-colorable v0.1.14
 	github.com/mattn/go-isatty v0.0.20
-	github.com/twangodev/lfm-api v1.1.1
+	github.com/twangodev/lfm-api v1.1.2
 	github.com/urfave/cli/v2 v2.27.7
 	github.com/xeyossr/go-discordrpc v1.1.0
 )
 
 require (
-	github.com/bozd4g/go-http-client v1.0.2 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.7 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/stretchr/testify v1.10.0 // indirect
 	github.com/xrash/smetrics v0.0.0-20250705151800-55b8f293f342 // indirect
 	golang.org/x/exp v0.0.0-20251219203646-944ab1f22d93 // indirect
 	golang.org/x/net v0.55.0 // indirect
