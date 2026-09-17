@@ -77,8 +77,6 @@ homebrew_casks:
     directory: Casks
     homepage: "https://github.com/twangodev/lfm-cli"
     description: "Show your Last.FM scrobbles on Discord"
-    url:
-      verified: "github.com/twangodev/lfm-cli/"
     commit_author:
       name: goreleaserbot
       email: bot@goreleaser.com
