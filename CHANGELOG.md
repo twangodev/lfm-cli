@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.4](https://github.com/twangodev/lfm-cli/compare/v1.6.3...v1.6.4) (2026-09-17)
+
+
+### Bug Fixes
+
+* **deps:** update lfm-api to v1.1.2 for Fastly challenge handling ([7fd83da](https://github.com/twangodev/lfm-cli/commit/7fd83da251fc0e6f93a7ee35fd6a79bf3621506c))
+
 ## [1.6.3](https://github.com/twangodev/lfm-cli/compare/v1.6.2...v1.6.3) (2026-09-05)
 
 
