@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/twangodev/lfm-cli/compare/v1.6.4...v1.7.0) (2026-09-29)
+
+
+### Features
+
+* fall back to cached listening data when Last.fm is unavailable ([12de2c6](https://github.com/twangodev/lfm-cli/commit/12de2c6d6aa01d5210c3963256bcd202ca5f071b))
+
+
+### Bug Fixes
+
+* **release:** remove deprecated Homebrew URL verification setting ([ec82dff](https://github.com/twangodev/lfm-cli/commit/ec82dff440889b69a3ad3f407371db214f820a9c))
+
 ## [1.6.4](https://github.com/twangodev/lfm-cli/compare/v1.6.3...v1.6.4) (2026-09-17)
 
 
