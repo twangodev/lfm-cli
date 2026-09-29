@@ -82,3 +82,18 @@ func TestLogoutResetsTimestamp(t *testing.T) {
 		t.Fatal("logout must reset ts so re-login re-sends presence for the same track")
 	}
 }
+
+func TestCycleClearsExpiredPresence(t *testing.T) {
+	original, health := getActiveScrobble, fetchHealth
+	defer func() {
+		getActiveScrobble = original
+		fetchHealth = health
+		loggedIn = false
+	}()
+	getActiveScrobble = func(string) (lfm.Scrobble, error) { return lfm.EmptyScrobble, errScrobbleExpired }
+	loggedIn = true
+	cycle()
+	if loggedIn {
+		t.Fatal("expired listening data must clear presence")
+	}
+}

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log/slog"
+	"net/url"
 	"os"
 	"time"
 
@@ -34,6 +35,15 @@ var profileUrl string
 var logLevel = new(slog.LevelVar)
 
 func exec(ctx *cli.Context) error {
+	endpoint := ctx.String("fallback-url")
+	if endpoint != "" {
+		u, err := url.Parse(endpoint)
+		if err != nil || u.Host == "" || (u.Scheme != "https" && u.Scheme != "http") || u.RawQuery != "" || u.Fragment != "" || u.User != nil {
+			return fmt.Errorf("fallback-url must be an HTTP(S) base URL")
+		}
+	}
+	source := newScrobbleSource(endpoint)
+	getActiveScrobble = source.get
 
 	showProfile = !ctx.Bool("hide-profile")
 	showLoved = ctx.Bool("show-loved")
@@ -90,6 +100,11 @@ func main() {
 		},
 		Copyright: "(c) 2022 James Ding",
 		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:  "fallback-url",
+				Usage: "Listening service base URL; use an empty value to disable fallback",
+				Value: "https://listening.twango.dev",
+			},
 			&cli.StringFlag{
 				Name:        "user",
 				Aliases:     []string{"u"},

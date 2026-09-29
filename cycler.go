@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log/slog"
 	"time"
@@ -46,6 +47,12 @@ func cycle() {
 	s, err := getActiveScrobble(username) // Fetch latest scrobble, emptyScrobble if no new scrobble
 	fetchHealth.observe(time.Now(), err)
 	if err != nil { // Transient fetch failure is not "stopped scrobbling"
+		if errors.Is(err, errScrobbleExpired) {
+			if loggedIn {
+				slog.Warn("Listening data expired. Clearing presence.")
+				logout()
+			}
+		}
 		return
 	}
 

@@ -64,3 +64,21 @@ foo@bar:~$ lfm-cli -u MYUSERNAME
 ```
 
 For full reference on flags, run the binary with the `-h` or `--help` flag.
+
+### Fetch fallback
+
+If the Last.fm website fails, lfm-cli uses `https://listening.twango.dev` as a
+fallback, sending it your Last.fm username. You do not need an API key. After two
+consecutive website failures, a circuit breaker pauses scraping for one minute, then probes for
+recovery. Healthy requests return to the normal refresh interval.
+
+The fallback caches results for 30–60 seconds, so track changes can take that
+long to appear. Listening data expires after two minutes without a fresh
+observation; the CLI clears expired Discord presence. The service may limit
+requests when its regional Last.fm API budget is exhausted.
+
+Use `--fallback-url https://your-service.example` for a compatible self-hosted
+service, or `--fallback-url ""` to disable fallback. Fallback responses must include
+`observed_at` freshness metadata. Loved-track status is unavailable through the
+fallback; elapsed time starts at the first observation when the actual start time
+is unknown.
